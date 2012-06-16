@@ -20,15 +20,16 @@ find_package(DBUS REQUIRED)
 #GLIB
 find_package(GLIB REQUIRED)
 			       
-# Find Python executable
-find_package(PythonLibs REQUIRED)
+# Find Python executable  
 find_package(PythonInterp REQUIRED)
+find_package(PythonLibs REQUIRED)
+
 if(NOT PYTHONLIBS_FOUND OR NOT PYTHON_EXECUTABLE)
   message(SEND_ERROR "You need Python to build the dbus python bindings")
 endif(NOT PYTHONLIBS_FOUND OR NOT PYTHON_EXECUTABLE)
 
 # The code below prints the Python extension for the current system
-set(get_python_suffix "import imp ; print(filter(lambda s : s[1] == 'rb' and s[0][0] == '.', imp.get_suffixes())[0][0])")
+set(get_python_suffix "import imp ; print(list(filter(lambda s : s[1] == 'rb' and s[0][0] == '.', imp.get_suffixes()))[0][0])")
 
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "${get_python_suffix}"
@@ -38,7 +39,7 @@ string(REPLACE "\n" "" _modsuffix ${_modsuffix})
 message(STATUS "Python module suffix is: ${_modsuffix}")
 
 # The code below returns the site-packages directory for the current system
-set(get_site_package_dir "from distutils.sysconfig import get_python_lib; print get_python_lib()")
+set(get_site_package_dir "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "${get_site_package_dir}"
   OUTPUT_VARIABLE site_pkg
