@@ -41,6 +41,10 @@
 #   define USING_DBG 1
 #endif
 
+#ifdef _MSC_VER
+#   define inline __inline
+#endif
+
 #define DEFINE_CHECK(type) \
 static inline int type##_Check (PyObject *o) \
 { \

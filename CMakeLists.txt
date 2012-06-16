@@ -31,6 +31,11 @@ endif(NOT PYTHONLIBS_FOUND OR NOT PYTHON_EXECUTABLE)
 # The code below prints the Python extension for the current system
 set(get_python_suffix "import imp ; print(list(filter(lambda s : s[1] == 'rb' and s[0][0] == '.', imp.get_suffixes()))[0][0])")
 
+find_file(stdint stdint.h)
+if(NOT stdint)
+  message(SEND_ERROR "You need a C99 compliant stdint.h for windows, use e.g. http://msinttypes.googlecode.com/svn/trunk/stdint.h")
+endif(NOT stdint)
+
 execute_process(
   COMMAND ${PYTHON_EXECUTABLE} -c "${get_python_suffix}"
   OUTPUT_VARIABLE _modsuffix
@@ -57,7 +62,7 @@ target_link_libraries(_dbus_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY})
 include_directories(_dbus_glib_bindings/ ${GLIB_INCLUDE_DIR} ${GLIB_CONFIG_INCLUDE_DIR})
 file(GLOB dbus_glib_binding_sources _dbus_glib_bindings/*.c)
 add_library(_dbus_glib_bindings SHARED ${dbus_glib_binding_sources})
-target_link_libraries(_dbus_glib_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY} ${DBUS_GLIB_LIBRARY} ${GLIB_LIBRARIES})
+target_link_libraries(_dbus_glib_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY} ${GLIB_LIBRARIES})
 
 file(GLOB dbus_py_test_sources test/*.c)
 add_library(dbus_py_test SHARED ${dbus_py_test_sources})
