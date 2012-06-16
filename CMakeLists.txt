@@ -15,8 +15,8 @@ include (CheckTypeSize)
 
 #DBUS
 find_package(DBUS REQUIRED)
-include_directories(${DBUS_INCLUDES})
-set(CMAKE_EXTRA_INCLUDE_FILES "<dbus/dbus.h>")
+set(CMAKE_REQUIRED_INCLUDES ${DBUS_INCLUDES})
+set(CMAKE_EXTRA_INCLUDE_FILES dbus/dbus.h)
 check_type_size(DBusBasicValue DBUSBASICVALUE)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
@@ -63,7 +63,7 @@ file(GLOB dbus_binding_sources _dbus_bindings/*.c)
 add_library(_dbus_bindings SHARED ${dbus_binding_sources})
 target_link_libraries(_dbus_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY})
 
-include_directories(_dbus_glib_bindings/ ${GLIB_INCLUDE_DIR} ${GLIB_CONFIG_INCLUDE_DIR})
+include_directories(_dbus_glib_bindings/ ${GLIB_INCLUDE_DIR} ${GLIB_CONFIG_INCLUDE_DIR} ${DBUS_INCLUDES})
 file(GLOB dbus_glib_binding_sources _dbus_glib_bindings/*.c)
 add_library(_dbus_glib_bindings SHARED ${dbus_glib_binding_sources})
 target_link_libraries(_dbus_glib_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY} ${GLIB_LIBRARIES})
