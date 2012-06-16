@@ -11,11 +11,16 @@ set(PACKAGE_VERSION "1.1.0")
 set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 set(PACKAGE_TARNAME "${PACKAGE_NAME}")
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-						       
+include (CheckTypeSize) 
+
 #DBUS
 find_package(DBUS REQUIRED)
+include_directories(${DBUS_INCLUDES})
+set(CMAKE_EXTRA_INCLUDE_FILES "<dbus/dbus.h>")
+check_type_size(DBusBasicValue DBUSBASICVALUE)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 #GLIB
 find_package(GLIB REQUIRED)
@@ -52,8 +57,7 @@ execute_process(
 string(REPLACE "\n" "" site_pkg ${site_pkg}) 
 message(STATUS "Python module path is: ${site_pkg}")
 
-include_directories(include/ ${PYTHON_INCLUDE_DIRS} ${DBUS_INCLUDES})
-
+include_directories(include/ ${PYTHON_INCLUDE_DIRS})
 include_directories(_dbus_bindings/)
 file(GLOB dbus_binding_sources _dbus_bindings/*.c)
 add_library(_dbus_bindings SHARED ${dbus_binding_sources})

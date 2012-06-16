@@ -72,3 +72,6 @@
 
 /* Version number of package */
 #cmakedefine VERSION "@VERSION@"
+
+/* Do we have DBusBasicValue? */
+#cmakedefine HAVE_DBUSBASICVALUE
