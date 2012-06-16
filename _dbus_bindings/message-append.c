@@ -934,7 +934,7 @@ _message_iter_append_variant(DBusMessageIter *appender, PyObject *obj)
     dbus_signature_iter_init(&obj_sig_iter, obj_sig_str);
 
     { /* scope for variant_iters */
-        DBusMessageIter variant_iters[variant_level];
+        DBusMessageIter* variant_iters = malloc(sizeof(DBusMessageIter) * variant_level);
         long i;
 
         for (i = 0; i < variant_level; i++) {
@@ -984,7 +984,7 @@ _message_iter_append_variant(DBusMessageIter *appender, PyObject *obj)
                 goto out;
             }
         }
-
+		free(variant_iters);
     }
 
 out:
