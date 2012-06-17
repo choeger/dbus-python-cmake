@@ -99,7 +99,7 @@ DBusPyServer_set_auth_mechanisms(Server *self,
 
     /* scope for list */
     {
-        const char *list[length + 1];
+        char *list = malloc(sizeof(char) * (length + 1));
 
         if (!(references = PyTuple_New(length)))
             goto error;
@@ -131,6 +131,7 @@ DBusPyServer_set_auth_mechanisms(Server *self,
         Py_BEGIN_ALLOW_THREADS
         dbus_server_set_auth_mechanisms(self->server, list);
         Py_END_ALLOW_THREADS
+		free(list);
     }
 
     Py_CLEAR(fast_seq);
