@@ -66,7 +66,7 @@ target_link_libraries(_dbus_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY})
 include_directories(_dbus_glib_bindings/ ${GLIB_INCLUDE_DIR} ${GLIB_CONFIG_INCLUDE_DIR} ${DBUS_INCLUDES})
 file(GLOB dbus_glib_binding_sources _dbus_glib_bindings/*.c)
 add_library(_dbus_glib_bindings SHARED ${dbus_glib_binding_sources})
-target_link_libraries(_dbus_glib_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY} ${GLIB_LIBRARIES})
+target_link_libraries(_dbus_glib_bindings ${PYTHON_LIBRARIES} ${DBUS_LIBRARY} ${DBUS_GLIB_LIBRARY} ${GLIB_LIBRARIES})
 
 file(GLOB dbus_py_test_sources test/*.c)
 add_library(dbus_py_test SHARED ${dbus_py_test_sources})
